@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 def user():
-    count = {"AC":True,"BS":True,"SM":True,"DE":True}
     while True:
         print(count)
         display()
+        if(count["AC"] == count["BS"] == count["SM"] == count["DE"] == False):
+            break
         try:
             print("Which ships do you put?")
             ship = int(input("1:Aircraft charrier(5) 2:Battleship(4) 3:Submarrine(3) 4:Destroyer(2) "))
@@ -21,13 +22,11 @@ def user():
                 if not count["AC"]:
                     print("You've already used it !")
                     continue
-                if direction == 0 and changeY + 4 < 10:
+                if direction == 0 and changeY + 4 < 10 :
                     AC(changeX, changeY, direction)
-                    count["AC"] = False
                     #break;
                 elif direction == 1 and changeX + 4 < 10:
                     AC(changeX, changeY, direction)
-                    count["AC"] = False
                     #break;
                 else:
                     print("Value you set is out of range!")
@@ -37,11 +36,9 @@ def user():
                     continue
                 if direction == 0 and changeY + 3 < 10:
                     BS(changeX, changeY, direction)
-                    count["BS"] = False
                     #break;
                 elif direction == 1 and changeX + 3 < 10:
                     BS(changeX, changeY, direction)
-                    count["BS"] = False
                     #break;
                 else:
                     print("Value you set is out of range!")
@@ -51,11 +48,9 @@ def user():
                     continue
                 if direction == 0 and changeY + 2 < 10:
                     SM(changeX, changeY, direction)
-                    count["SM"] = False
                     #break;
                 elif direction == 1 and changeX + 2 < 10:
                     SM(changeX, changeY, direction)
-                    count["SM"] = False
                     #break;
                 else:
                     print("Value you set is out of range!")
@@ -65,10 +60,8 @@ def user():
                     continue
                 if direction == 0 and changeY + 1 < 10:
                     DE(changeX, changeY, direction)
-                    count["DE"] = False
                 elif direction == 1 and changeX + 1 < 10:
                     DE(changeX, changeY, direction)
-                    count["DE"] = False
                     #break;
                 else:
                     print("Value you set is out of range!")
@@ -100,37 +93,71 @@ def display():
                 print(" ")
 
 def AC(x, y, direction):
-    #This is a aircraft carrier which has 5 space
-    for i in range(5):
-        if direction == 0:
-            coordinate[y + i][x] = 1
-        else:
-            coordinate[y][x + i] = 1
-
+    if not check_coordinate(5,x,y,direction):
+        print("\033[0;31;40mAny ship already there!\033[0m]")
+        return
+    else:
+        #This is a aircraft carrier which has 5 space
+        for i in range(5):
+            if direction == 0:
+                coordinate[y + i][x] = 1
+            else:
+                coordinate[y][x + i] = 1
+            count["AC"] = False 
 def BS(x, y, direction):
     #This is a battleship which has 4 space
-    for i in range(4):
-        if direction == 0:
-            coordinate[y + i][x] = 1
-        else:
-            coordinate[y][x + i] = 1
-
+    if not check_coordinate(4,x,y,direction):
+        print("\033[0;31;40mAny ship already there!\033[0m]")
+        return
+    else:
+        for i in range(4):
+            if direction == 0:
+                coordinate[y + i][x] = 1
+            else:
+                coordinate[y][x + i] = 1
+        count["BS"] = False
 def SM(x, y, direction):
+    if not check_coordinate(3,x,y,direction):
+        print("\033[0;31;40mAny ship already there!\033[0m]")
+        return
     #This is a submarine which has 3 space
-    for i in range(3):
-        if direction == 0:
-            coordinate[y + i][x] = 1
-        else:
-            coordinate[y][x + i] = 1
-
+    else:
+        for i in range(3):
+            if direction == 0:
+                coordinate[y + i][x] = 1
+            else:
+                coordinate[y][x + i] = 1
+            count["SM"] = False
 def DE(x, y, direction):
     #This is a destroyer which has 2 space
-    for i in range(2):
-        if direction == 0:
-            coordinate[y + i][x] = 1
-        else:
-            coordinate[y][x + i] = 1
+    if not check_coordinate(2,x,y,direction):
+        print("\033[0;31;40mAny ship already there!\033[0m]")
+        return
+    else:
+        for i in range(2):
+            if direction == 0:
+                coordinate[y + i][x] = 1
+            else:
+                coordinate[y][x + i] = 1
+            count["DE"] = False
+def check_coordinate(n,x,y,direction):
+    if direction == 0:
+        for i in range(n):
+            if coordinate[y + i][x] == 0:
+                pass
+            else:
+                return False
+        return True
+    else:
+        for i in range(n):
+            if coordinate[y][x + i] == 0:
+                pass
+            else:
+                print("False")
+                return False
+        return True
 
 if __name__ == '__main__':
     coordinate = [[0 for _ in range(10)] for _ in range(10)]
+    count = {"AC":True,"BS":True,"SM":True,"DE":True}
     user()
