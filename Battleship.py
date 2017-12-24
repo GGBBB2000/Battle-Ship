@@ -5,11 +5,11 @@ def user():
     while True:
         print(count)
         display()
-        if(count["AC"] == count["BS"] == count["SM"] == count["DE"] == False):
+        if(count["AC"] == count["BS"] == count["SM"] == count["DE"] == count["CR"] == False):
             break
         try:
             print("Which ships do you put?")
-            ship = int(input("1:Aircraft charrier(5) 2:Battleship(4) 3:Submarrine(3) 4:Destroyer(2) "))
+            ship = int(input("1:Aircraft charrier(5) 2:Battleship(4) 3:Submarrine(3) 4:Cruiser(3) 5:Destroyer(2) "))
             direction = int(input("Set direction of the ship; 0:column 1:row "))
             if direction != 0 and direction != 1:
                 print("Chose only 0 or 1")
@@ -55,6 +55,17 @@ def user():
                 else:
                     print("Value you set is out of range!")
             elif ship == 4:
+                if not count["CR"]:
+                    print("You've already used it !")
+                    continue
+                if direction == 0 and changeY + 2 < 10:
+                    CR(changeX, changeY, direction)
+                elif direction == 1 and changeX + 2 < 10:
+                    CR(changeX, changeY, direction)
+                    #break;
+                else:
+                    print("Value you set is out of range!")
+            elif ship == 5:
                 if not count["DE"]:
                     print("You've already used it !")
                     continue
@@ -128,6 +139,18 @@ def SM(x, y, direction):
             else:
                 coordinate[y][x + i] = 1
             count["SM"] = False
+def CR(x, y, direction):
+    if not check_coordinate(3,x,y,direction):
+        print("\033[0;31;40mAny ship already there!\033[0m]")
+        return
+    #This is a submarine which has 3 space
+    else:
+        for i in range(3):
+            if direction == 0:
+                coordinate[y + i][x] = 1
+            else:
+                coordinate[y][x + i] = 1
+            count["CR"] = False
 def DE(x, y, direction):
     #This is a destroyer which has 2 space
     if not check_coordinate(2,x,y,direction):
@@ -159,5 +182,5 @@ def check_coordinate(n,x,y,direction):
 
 if __name__ == '__main__':
     coordinate = [[0 for _ in range(10)] for _ in range(10)]
-    count = {"AC":True,"BS":True,"SM":True,"DE":True}
+    count = {"AC":True,"BS":True,"SM":True,"DE":True,"CR":True}
     user()
