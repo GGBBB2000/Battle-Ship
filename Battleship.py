@@ -5,7 +5,7 @@ def user():
     while True:
         print(count)
         display()
-        if(count["AC"] == count["BS"] == count["SM"] == count["DE"] == count["CR"] == False):
+        if not any(iter(count.values())):
             break
         try:
             print("Which ships do you put?")
